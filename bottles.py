@@ -1,4 +1,4 @@
-word = 'бутылок '
+word = 'бутылок путча '
 for beer_num in range(99,0,-1):
     print(beer_num, word, 'пива на стене.')
     print(beer_num, word, 'пива.')
