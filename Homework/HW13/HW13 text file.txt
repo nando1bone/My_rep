@@ -1,0 +1,80 @@
+#Создаем схему и таблицу
+
+CREATE SCHEMA `hw13` ;
+
+CREATE TABLE `hw13`.`continent` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `continent` VARCHAR(45) NOT NULL,
+  `number of countries` INT NOT NULL,
+  PRIMARY KEY (`id`));
+
+#Добавили данные в таблицу `continent`
+
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('Eurasia', '94');
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('Africa', '55');
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('Australia', '1');
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('North America', '23');
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('South America', '13');
+INSERT INTO `hw13`.`continent` (`continent`, `number of countries`) VALUES ('Antarctica', '0');
+
+#Создали таблицу `countries`. 
+
+CREATE TABLE `hw13`.`countries` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `countries` VARCHAR(45) NOT NULL,
+  `Population` INT NOT NULL,
+  `Capital` VARCHAR(45) NOT NULL,
+  `continent_id` INT,
+  PRIMARY KEY (`id`));
+
+#Добавили данные
+
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('USA', '301693000', 'Washington');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Brazil', '214047375', 'Rio de Janeiro');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Canada', '38929902', 'Ottawa');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('China', '1410539758', 'Beijing');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Republic of Belarus', '9255524', 'Minsk');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Ukraine', '41167336', 'Kiyv');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Venezuela', '29789730', 'Caracas');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Australia', '27984199', 'Canberra');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Egypt', '104179000', 'Cairo');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Angola', '34795287', 'Luanda');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Agentina', '47327407', 'Buenos Aires');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Honduras', '9459440', 'Tegucigalpa');
+INSERT INTO `hw13`.`countries` (`countries`, `Population`,`Capital`) VALUES ('Nigeria', '216746934', 'Abuja');
+
+# Внесли изменения в таблицу `countries`, созданием FOREIGN KEY
+
+ALTER TABLE `hw13`.`countries` 
+ADD COLUMN `continent_id` INT NULL AFTER `Capital`,
+ADD INDEX `continent_id_idx` (`continent_id` ASC) VISIBLE;
+;
+ALTER TABLE `hw13`.`countries` 
+ADD CONSTRAINT `continent_id`
+  FOREIGN KEY (`continent_id`)
+  REFERENCES `hw13`.`continent` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+#Внесли данные с таблицы `continent` в `countries`
+
+UPDATE `hw13`.`countries` SET `continent_id` = '1' WHERE (`id` = '4');
+UPDATE `hw13`.`countries` SET `continent_id` = '2' WHERE (`id` = '13');
+UPDATE `hw13`.`countries` SET `continent_id` = '3' WHERE (`id` = '8');
+UPDATE `hw13`.`countries` SET `continent_id` = '1' WHERE (`id` = '6');
+UPDATE `hw13`.`countries` SET `continent_id` = '1' WHERE (`id` = '5');
+UPDATE `hw13`.`countries` SET `continent_id` = '2' WHERE (`id` = '9');
+UPDATE `hw13`.`countries` SET `continent_id` = '2' WHERE (`id` = '10');
+UPDATE `hw13`.`countries` SET `continent_id` = '4' WHERE (`id` = '3');
+UPDATE `hw13`.`countries` SET `continent_id` = '4' WHERE (`id` = '12');
+UPDATE `hw13`.`countries` SET `continent_id` = '5' WHERE (`id` = '7');
+UPDATE `hw13`.`countries` SET `continent_id` = '5' WHERE (`id` = '11');
+UPDATE `hw13`.`countries` SET `continent_id` = '5' WHERE (`id` = '2');
+
+# Соединили таблицы с помощью JOIN и вывели результат
+
+SELECT * FROM hw13.countries JOIN hw13.continent ON hw13.countries.continent_id = hw13.continent.id;
+
+#Соединили таблицы с помощью JOIN  и вывели результат состоящий только их двух столбцов: countries и continent.
+
+SELECT hw13.countries.countries , hw13.continent.continent FROM hw13.countries JOIN hw13.continent ON hw13.countries.continent_id = hw13.continent.id;
